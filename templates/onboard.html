@@ -1,0 +1,87 @@
+{% include 'header.html' %}
+<h1>welcome {{ first }}, it looks like it is your first time here!</h1>
+<h2 style="padding-bottom: 2em;">we have just a few more questions:</h2>
+{% if error != '' %}
+    <div class="alert alert-danger" role="alert">
+        <strong>oh no!</strong><br>
+        <p>{{ error|safe }}</p>
+        fix these problems and try submitting again.
+    </div>
+{% endif %}
+<form style="padding-top: 2em;" class="form-horizontal" action="onboard" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="phone">phone number</label>
+            <div class="col-md-4">
+                <input id="phone" name="phone" placeholder="(609) 123 4567" class="form-control input-md" required=""
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="driver">would you like to drive with ship2pd</label>
+            <div class="col-md-4">
+                <label class="checkbox-inline" for="driver-0">
+                    <input name="driver" id="driver-0" value="yes" type="checkbox">
+                    yes
+                </label>
+            </div>
+        </div>
+        <div id="drive" style="visibility: hidden;">
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="homezip">home zip</label>
+                <div class="col-md-4">
+                    <input id="homezip" name="homezip" placeholder="08628" class="form-control input-md" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="workzip">work zip</label>
+                <div class="col-md-4">
+                    <input id="workzip" name="workzip" placeholder="08628" class="form-control input-md" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="caryear">car year</label>
+                <div class="col-md-4">
+                    <input id="caryear" name="caryear" placeholder="2010" class="form-control input-md" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="carmake">car make</label>
+                <div class="col-md-4">
+                    <input id="carmake" name="carmake" placeholder="Honda" class="form-control input-md" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="carmodel">car model</label>
+                <div class="col-md-4">
+                    <input id="carmodel" name="carmodel" placeholder="Accord" class="form-control input-md" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="carcolor">car color</label>
+                <div class="col-md-4">
+                    <input id="carcolor" name="carcolor" placeholder="White" class="form-control input-md" type="text">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="carplate">car license plate</label>
+                <div class="col-md-4">
+                    <input id="carplate" name="carplate" placeholder="HUY21K" class="form-control input-md" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-4">
+                <button id="submit" name="submit" type="submit" class="btn btn-primary">submit</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<script src="../static/js/onboard.js"></script>
+{% include 'footer.html' %}

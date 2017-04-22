@@ -1,0 +1,7 @@
+{% include 'header.html' %}
+{% if logged_in %}
+    <h1>welcome back {{ first }}!</h1>
+{% else %}
+    <h1>welcome to ship2pd, please login!</h1>
+{% endif %}
+{% include 'footer.html' %}
