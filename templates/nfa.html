@@ -1,0 +1,44 @@
+{% include 'header.html' %}
+	<div class="container" style="text-align: center;">
+		<div class="row">
+			<div class="form-container" style="float: none; margin: 0 auto;">
+				<form style="padding-top: 2em;" class="form-horizontal" action="login" method="post">
+					<fieldset>
+						<div class="form-group">
+							<label class="control-label" for="email">How absurd <!--fucked--> exactly?</label>
+							<div class="dropdown controls">
+								<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Dropdown button
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" href="#">Send me <i>N</i> verification codes</a>
+									<a class="dropdown-item" href="#">Team-based authentication</a>
+									<a class="dropdown-item" href="#">Api-based authentication</a>
+								</div>
+							</div>	
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="pass">password</label>
+							<div class="controls">
+								<input id="pass" name="pass" placeholder="password" class="form-control input-md"
+									   required=""
+									   type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="controls">
+								<button id="submit" name="submit" type="submit" class="btn btn-primary" value="login">login</button>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="controls">
+								<button id="submit" name="submit" type="submit" class="btn btn-danger" value="signup">signup
+								</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+{% include 'footer.html' %}
