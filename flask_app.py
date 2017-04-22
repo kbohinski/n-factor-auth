@@ -18,6 +18,16 @@ def index():
     return render_template('index.html', logged_in=logged_in())
 
 
+@app.route('/nfa')
+def nfa():
+    return render_template('nfa.html')
+
+
+@app.route('/onboard')
+def onboard():
+    return render_template('onboard.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if logged_in():
