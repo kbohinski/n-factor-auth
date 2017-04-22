@@ -2,7 +2,7 @@
 {% if logged_in %}
     <h1>welcome back {{ first }}!</h1>
 {% else %}
-    <h1>welcome to n-factor-auth, please login!</h1>
+    <h1>welcome to n-factor-auth, please login or signup!</h1>
     <form style="padding-top: 2em;" class="form-horizontal" action="login" method="post">
         <fieldset>
             <div class="form-group">
@@ -23,11 +23,16 @@
             </div>
             <div class="form-group">
                 <div class="col-md-4">
-                    <button id="submit" name="submit" type="submit" class="btn btn-primary">submit</button>
+                    <button id="submit" name="submit" type="submit" class="btn btn-primary" value="login">login</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-4">
+                    <button id="submit" name="submit" type="submit" class="btn btn-danger" value="signup">signup
+                    </button>
                 </div>
             </div>
         </fieldset>
     </form>
-    <p>don't have an account? <a href="signup">signup</a></p>
 {% endif %}
 {% include 'footer.html' %}
