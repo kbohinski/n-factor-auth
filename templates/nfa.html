@@ -7,23 +7,29 @@
         fix these problems and try submitting again.
     </div>
 {% endif %}
-<form style="padding-top: 2em;" class="form-horizontal" action="nfa" method="post">
-    <fieldset>
-        {% for i in range(0, n) %}
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="token">tokens{{ i }}</label>
-                <div class="col-md-4">
-                    <input id="tokens{{ i }}" name="tokens{{ i }}" placeholder="" class="form-control input-md"
-                           required=""
-                           type="text">
-                </div>
-            </div>
-        {% endfor %}
-        <div class="form-group">
-            <div class="col-md-4">
-                <button id="submit" name="submit" type="submit" class="btn btn-primary">submit</button>
-            </div>
-        </div>
-    </fieldset>
-</form>
+<div class="container" style="text-align: center;">
+	<div class="row">
+		<div class="form-container" style="float: none; margin: 0 auto;">
+			<form style="padding-top: 2em;" class="form-horizontal" action="nfa" method="post">
+				<fieldset>
+					{% for i in range(0, n) %}
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="token">tokens{{ i }}</label>
+							<div class="col-md-4">
+								<input id="tokens{{ i }}" name="tokens{{ i }}" placeholder="" class="form-control input-md"
+									   required=""
+									   type="text">
+							</div>
+						</div>
+					{% endfor %}
+					<div class="form-group">
+						<div class="col-md-4">
+							<button id="submit" name="submit" type="submit" class="btn btn-primary">submit</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
 {% include 'footer.html' %}
