@@ -45,6 +45,17 @@ def nfa():
             session.pop('error', None)
             return redirect(url_for('index'))
 
+        if session['mongo']['method'] == 'team':
+            for i in range(0, int(len(session['mongo']['numbers']))):
+                if session[str('tokens' + str(i))] != request.form[str('tokens' + str(i))]:
+                    session['error'] = '<p>one of your tokens was wrong, try again</p>'
+                    session['error'] += '<p>got "' + request.form[str('tokens' + str(i))] + '", expected "' + session[
+                        str('tokens' + str(i))] + '"</p>'
+                    return redirect(url_for('nfa'))
+            session['nfa_passed'] = True
+            session.pop('error', None)
+            return redirect(url_for('index'))
+
     n = 1
 
     if session['mongo']['method'] == 'n':
