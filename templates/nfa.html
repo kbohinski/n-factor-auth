@@ -11,9 +11,9 @@
     <fieldset>
         {% for i in range(0, n) %}
             <div class="form-group">
-                <label class="col-md-4 control-label" for="token">token - {{ i }}</label>
+                <label class="col-md-4 control-label" for="token">tokens{{ i }}</label>
                 <div class="col-md-4">
-                    <input id="token{{ i }}" name="token{{ i }}" placeholder="" class="form-control input-md"
+                    <input id="tokens{{ i }}" name="tokens{{ i }}" placeholder="" class="form-control input-md"
                            required=""
                            type="text">
                 </div>

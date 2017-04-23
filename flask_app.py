@@ -1,9 +1,10 @@
-import json
-
-import requests
-from pymongo import MongoClient
 from flask import Flask, render_template, redirect, url_for, request, session, jsonify
 from passlib.apps import custom_app_context as pwd_context
+from pymongo import MongoClient
+from twilio.rest import Client
+
+import random
+import string
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -11,6 +12,8 @@ app.config.from_pyfile('config.py')
 client = MongoClient()
 db = client['n-factor-auth']
 users = db['users']
+
+twilio = Client(app.config.get('TWILIO_ID'), app.config.get('TWILIO_TOKEN'))
 
 
 @app.route('/')
@@ -20,13 +23,34 @@ def index():
 
 @app.route('/nfa', methods=['GET', 'POST'])
 def nfa():
-    # if request.method == 'POST':
-    return render_template('nfa.html')
+    if not logged_in():
+        return redirect(url_for('index'))
+
+    if logged_in() and passed_nfa():
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        if session['mongo']['method'] == 'n':
+            for i in range(0, int(session['mongo']['n'])):
+                if session[str('tokens' + str(i))] != request.form[str('tokens' + str(i))]:
+                    return redirect(url_for('nfa'))
+            return redirect(url_for('index'))
+
+    if session['mongo']['method'] == 'n':
+        for i in range(0, int(session['mongo']['n'])):
+            token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            session[str('tokens' + str(i))] = token
+            twilio.messages.create(to=session['mongo']['number'], from_=app.config.get('TWILIO_NUMBER'), body=token)
+
+    return render_template('nfa.html', error='', n=int(session['mongo']['n']))
 
 
 @app.route('/onboard', methods=['GET', 'POST'])
 def onboard():
     if not logged_in():
+        return redirect(url_for('index'))
+
+    if logged_in() and passed_nfa():
         return redirect(url_for('index'))
 
     if request.method == 'POST':
@@ -47,7 +71,7 @@ def onboard():
 
             users.update({'email': session['email']}, {'$set': {'method': method}})
 
-            return redirect(url_for('logout'))
+        return redirect(url_for('logout'))
 
     return render_template('onboard.html')
 
@@ -55,7 +79,9 @@ def onboard():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if logged_in():
-        return redirect(url_for('index'))
+        if passed_nfa():
+            return redirect(url_for('index'))
+        return redirect(url_for('nfa'))
 
     if request.method == 'POST':
         if request.form['submit'] == 'signup':
@@ -71,6 +97,8 @@ def login():
             row = users.find_one({'email': request.form['email']})
             if pwd_context.verify(request.form['pass'], row['pass']):
                 session['email'] = row['email']
+                row.pop('_id', None)
+                session['mongo'] = row
                 return redirect(url_for('nfa'))
             return redirect(url_for('index'))
 
@@ -86,6 +114,12 @@ def logout():
 
 def logged_in():
     if 'email' in session:
+        return True
+    return False
+
+
+def passed_nfa():
+    if 'nfa_passed' in session:
         return True
     return False
 
