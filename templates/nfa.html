@@ -1,44 +1,52 @@
 {% include 'header.html' %}
-	<div class="container" style="text-align: center;">
-		<div class="row">
-			<div class="form-container" style="float: none; margin: 0 auto;">
-				<form style="padding-top: 2em;" class="form-horizontal" action="login" method="post">
-					<fieldset>
-						<div class="form-group">
-							<label class="control-label" for="email">How absurd <!--fucked--> exactly?</label>
-							<div class="dropdown controls">
-								<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Dropdown button
-								</button>
-								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item" href="#">Send me <i>N</i> verification codes</a>
-									<a class="dropdown-item" href="#">Team-based authentication</a>
-									<a class="dropdown-item" href="#">Api-based authentication</a>
-								</div>
-							</div>	
-						</div>
-						<div class="form-group">
-							<label class="control-label" for="pass">password</label>
-							<div class="controls">
-								<input id="pass" name="pass" placeholder="password" class="form-control input-md"
-									   required=""
-									   type="text">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="controls">
-								<button id="submit" name="submit" type="submit" class="btn btn-primary" value="login">login</button>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="controls">
-								<button id="submit" name="submit" type="submit" class="btn btn-danger" value="signup">signup
-								</button>
-							</div>
-						</div>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="form-container" style="float: none; margin: 0 auto;">
+            <form style="padding-top: 2em;" class="form-horizontal" action="login" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="control-label">how absurd <!--fucked--> exactly?</label>
+                        <div class="dropdown controls">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                pick one!
+                            </button>
+                            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" value="n" href="#">Send me <i>N</i> verification codes</a>
+                                <a class="dropdown-item" value="team" href="#">Team-based authentication</a>
+                                <a class="dropdown-item" value="api" href="#">API-based authentication</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ask for n or phone numbers... -->
+                    <div class="form-group" id="n">
+                        <label class="control-label" for="n">n</label>
+                        <div class="controls">
+                            <input id="n" name="n" placeholder="20" class="form-control input-md"
+                                   required=""
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group" id="numbers">
+                        <label class="control-label" for="numbers">numbers (enter seperated by comma)</label>
+                        <div class="controls">
+                            <input id="numbers" name="numbers" placeholder="ex: '1234567890,6094753287'"
+                                   class="form-control input-md"
+                                   required=""
+                                   type="textarea">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="controls">
+                            <button id="submit" name="submit" type="submit" class="btn btn-primary" value="submit">
+                                save
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../static/js/onboard.js"></script>
 {% include 'footer.html' %}
