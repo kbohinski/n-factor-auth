@@ -1,10 +1,10 @@
+import random
+import string
+
 from flask import Flask, render_template, redirect, url_for, request, session, jsonify
 from passlib.apps import custom_app_context as pwd_context
 from pymongo import MongoClient
 from twilio.rest import Client
-
-import random
-import string
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -18,6 +18,10 @@ twilio = Client(app.config.get('TWILIO_ID'), app.config.get('TWILIO_TOKEN'))
 
 @app.route('/')
 def index():
+    if logged_in():
+        if passed_nfa():
+            return redirect(url_for('index'))
+        return redirect(url_for('nfa'))
     return render_template('index.html', logged_in=logged_in())
 
 
@@ -33,6 +37,7 @@ def nfa():
         if session['mongo']['method'] == 'n':
             for i in range(0, int(session['mongo']['n'])):
                 if session[str('tokens' + str(i))] != request.form[str('tokens' + str(i))]:
+                    session['error'] = '<p>one of your tokens was wrong, try again</p>'
                     return redirect(url_for('nfa'))
             return redirect(url_for('index'))
 
@@ -42,7 +47,7 @@ def nfa():
             session[str('tokens' + str(i))] = token
             twilio.messages.create(to=session['mongo']['number'], from_=app.config.get('TWILIO_NUMBER'), body=token)
 
-    return render_template('nfa.html', error='', n=int(session['mongo']['n']))
+    return render_template('nfa.html', error=session['error'], n=int(session['mongo']['n']))
 
 
 @app.route('/onboard', methods=['GET', 'POST'])
@@ -84,6 +89,8 @@ def login():
         return redirect(url_for('nfa'))
 
     if request.method == 'POST':
+        session['error'] = ''
+
         if request.form['submit'] == 'signup':
             user = {
                 'email': request.form['email'],
