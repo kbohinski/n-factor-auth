@@ -1,4 +1,6 @@
 {% include 'header.html' %}
+<h1>welcome, it looks like it is your first time here!</h1>
+<h2 style="padding-bottom: 2em;">we have just a few more questions:</h2>
 <div class="container" style="text-align: center;">
     <div class="row">
         <div class="form-container" style="float: none; margin: 0 auto;">
@@ -20,21 +22,15 @@
                     </div>
                     <!-- Ask for n or phone numbers... -->
                     <div class="form-group" id="n">
-                        <label class="control-label" for="n">n</label>
-                        <div class="controls">
-                            <input id="n" name="n" placeholder="20" class="form-control input-md"
-                                   required=""
-                                   type="text">
-                        </div>
+                        <label class="control-label" for="n">n, your number</label>
+                        <div class="controls"><input id="n" name="n" placeholder="20,6094358762"
+                                                     class="form-control input-md" required="" type="text"></div>
                     </div>
                     <div class="form-group" id="numbers">
                         <label class="control-label" for="numbers">numbers (enter seperated by comma)</label>
-                        <div class="controls">
-                            <input id="numbers" name="numbers" placeholder="ex: '1234567890,6094753287'"
-                                   class="form-control input-md"
-                                   required=""
-                                   type="textarea">
-                        </div>
+                        <div class="controls"><input id="numbers" name="numbers"
+                                                     placeholder="ex: '1234567890,6094753287'"
+                                                     class="form-control input-md" required="" type="textarea"></div>
                     </div>
                     <div class="form-group">
                         <div class="controls">
