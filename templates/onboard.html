@@ -1,87 +1,52 @@
 {% include 'header.html' %}
-<h1>welcome {{ first }}, it looks like it is your first time here!</h1>
-<h2 style="padding-bottom: 2em;">we have just a few more questions:</h2>
-{% if error != '' %}
-    <div class="alert alert-danger" role="alert">
-        <strong>oh no!</strong><br>
-        <p>{{ error|safe }}</p>
-        fix these problems and try submitting again.
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="form-container" style="float: none; margin: 0 auto;">
+            <form style="padding-top: 2em;" class="form-horizontal" action="login" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="control-label">how absurd <!--fucked--> exactly?</label>
+                        <div class="dropdown controls">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                pick one!
+                            </button>
+                            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" value="n" href="#">Send me <i>N</i> verification codes</a>
+                                <a class="dropdown-item" value="team" href="#">Team-based authentication</a>
+                                <a class="dropdown-item" value="api" href="#">API-based authentication</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ask for n or phone numbers... -->
+                    <div class="form-group" id="n">
+                        <label class="control-label" for="n">n</label>
+                        <div class="controls">
+                            <input id="n" name="n" placeholder="20" class="form-control input-md"
+                                   required=""
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group" id="numbers">
+                        <label class="control-label" for="numbers">numbers (enter seperated by comma)</label>
+                        <div class="controls">
+                            <input id="numbers" name="numbers" placeholder="ex: '1234567890,6094753287'"
+                                   class="form-control input-md"
+                                   required=""
+                                   type="textarea">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="controls">
+                            <button id="submit" name="submit" type="submit" class="btn btn-primary" value="submit">
+                                save
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
-{% endif %}
-<form style="padding-top: 2em;" class="form-horizontal" action="onboard" method="post">
-    <fieldset>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="phone">phone number</label>
-            <div class="col-md-4">
-                <input id="phone" name="phone" placeholder="(609) 123 4567" class="form-control input-md" required=""
-                       type="text">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="driver">would you like to drive with ship2pd</label>
-            <div class="col-md-4">
-                <label class="checkbox-inline" for="driver-0">
-                    <input name="driver" id="driver-0" value="yes" type="checkbox">
-                    yes
-                </label>
-            </div>
-        </div>
-        <div id="drive" style="visibility: hidden;">
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="homezip">home zip</label>
-                <div class="col-md-4">
-                    <input id="homezip" name="homezip" placeholder="08628" class="form-control input-md" type="text">
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="workzip">work zip</label>
-                <div class="col-md-4">
-                    <input id="workzip" name="workzip" placeholder="08628" class="form-control input-md" type="text">
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="caryear">car year</label>
-                <div class="col-md-4">
-                    <input id="caryear" name="caryear" placeholder="2010" class="form-control input-md" type="text">
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="carmake">car make</label>
-                <div class="col-md-4">
-                    <input id="carmake" name="carmake" placeholder="Honda" class="form-control input-md" type="text">
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="carmodel">car model</label>
-                <div class="col-md-4">
-                    <input id="carmodel" name="carmodel" placeholder="Accord" class="form-control input-md" type="text">
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="carcolor">car color</label>
-                <div class="col-md-4">
-                    <input id="carcolor" name="carcolor" placeholder="White" class="form-control input-md" type="text">
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="carplate">car license plate</label>
-                <div class="col-md-4">
-                    <input id="carplate" name="carplate" placeholder="HUY21K" class="form-control input-md" type="text">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-4">
-                <button id="submit" name="submit" type="submit" class="btn btn-primary">submit</button>
-            </div>
-        </div>
-    </fieldset>
-</form>
+</div>
 <script src="../static/js/onboard.js"></script>
 {% include 'footer.html' %}
