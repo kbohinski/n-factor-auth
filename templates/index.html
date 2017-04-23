@@ -1,7 +1,26 @@
 {% include 'header.html' %}
 {% if logged_in %}
     <h1>welcome back!</h1>
+    <h2>you made it!</h2>
 {% else %}
+    {% if request.args.get('account_made') %}
+        <div class="alert alert-success" role="alert">
+            <strong>yey!</strong><br>
+            <p>your account was successfully made, please login</p>
+        </div>
+    {% endif %}
+    {% if request.args.get('login_failure') %}
+        <div class="alert alert-danger" role="alert">
+            <strong>oh no!</strong><br>
+            <p>we could not log you in, please double check your account</p>
+            {% if request.args.get('account_does_not_exist') %}
+                <p>this account does not exist!</p>
+            {% endif %}
+            {% if request.args.get('username_in_use') %}
+                <p>this username is already in use!</p>
+            {% endif %}
+        </div>
+    {% endif %}
     <h1>welcome to n-factor-auth, please login or signup!</h1>
     <div class="container" style="text-align: center;">
         <div class="row">
@@ -9,9 +28,10 @@
                 <form style="padding-top: 2em;" class="form-horizontal" action="login" method="post">
                     <fieldset>
                         <div class="form-group">
-                            <label class="control-label" for="email">email</label>
+                            <label class="control-label" for="email">username</label>
                             <div class="controls">
-                                <input id="email" name="email" placeholder="plz@halp.com" class="form-control input-md"
+                                <input id="username" name="username" placeholder="username"
+                                       class="form-control input-md"
                                        required=""
                                        type="text">
                             </div>
@@ -34,7 +54,7 @@
                         <div class="form-group">
                             <div class="controls">
                                 <button id="submit" name="submit" type="submit" class="btn btn-danger" value="signup">
-                                    signup
+                                    first time? signup
                                 </button>
                             </div>
                         </div>

@@ -31,6 +31,8 @@ def nfa():
     if logged_in() and passed_nfa():
         return redirect(url_for('index'))
 
+    session['error'] = ''
+
     if request.method == 'POST':
         if session['mongo']['method'] == 'n':
             for i in range(0, int(session['mongo']['n'])):
@@ -40,15 +42,26 @@ def nfa():
                         str('tokens' + str(i))] + '"</p>'
                     return redirect(url_for('nfa'))
             session['nfa_passed'] = True
+            session.pop('error', None)
             return redirect(url_for('index'))
 
+    n = 1
+
     if session['mongo']['method'] == 'n':
+        n = int(session['mongo']['n'])
         for i in range(0, int(session['mongo']['n'])):
             token = '' + str(i) + ' - ' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
             session[str('tokens' + str(i))] = token
             twilio.messages.create(to=session['mongo']['number'], from_=app.config.get('TWILIO_NUMBER'), body=token)
 
-    return render_template('nfa.html', error=session['error'], n=int(session['mongo']['n']))
+    if session['mongo']['method'] == 'team':
+        n = int(len(session['mongo']['numbers']))
+        for i in range(0, int(session['mongo']['numbers'])):
+            token = '' + str(i) + ' - ' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            session[str('tokens' + str(i))] = token
+            twilio.messages.create(to=session['mongo']['numbers'][i], from_=app.config.get('TWILIO_NUMBER'), body=token)
+
+    return render_template('nfa.html', error=session['error'], n=n)
 
 
 @app.route('/onboard', methods=['GET', 'POST'])
@@ -66,18 +79,19 @@ def onboard():
             # Team Based
             method = 'team'
             numbers = request.form['numbers'].split(',')
-            users.update({'email': session['email']}, {'$set': {'method': method, 'numbers': numbers}})
+            users.update({'username': session['username']}, {'$set': {'method': method, 'numbers': numbers}})
 
         if 'n' in request.form:
             # N
             method = 'n'
             n = request.form['n'].split(',')[0]
             number = request.form['n'].split(',')[1]
-            users.update({'email': session['email']}, {'$set': {'method': method, 'number': number, 'n': n}})
+            users.update({'username': session['username']}, {'$set': {'method': method, 'number': number, 'n': n}})
 
-            users.update({'email': session['email']}, {'$set': {'method': method}})
+            users.update({'username': session['username']}, {'$set': {'method': method}})
 
-        return redirect(url_for('logout'))
+        session.clear()
+        return redirect(url_for('index', account_made=True))
 
     return render_template('onboard.html')
 
@@ -90,25 +104,27 @@ def login():
         return redirect(url_for('nfa'))
 
     if request.method == 'POST':
-        session['error'] = ''
-
         if request.form['submit'] == 'signup':
+            if users.find_one({'username': request.form['username']}) is not None:
+                return redirect(url_for('index', login_failure=True, username_in_use=True))
             user = {
-                'email': request.form['email'],
+                'username': request.form['username'],
                 'pass': pwd_context.hash(request.form['pass'])
             }
             users.insert_one(user)
-            session['email'] = request.form['email']
+            session['username'] = request.form['username']
             return redirect(url_for('onboard'))
 
         if request.form['submit'] == 'login':
-            row = users.find_one({'email': request.form['email']})
+            row = users.find_one({'username': request.form['username']})
+            if row is None:
+                return redirect(url_for('index', login_failure=True, account_does_not_exist=True))
             if pwd_context.verify(request.form['pass'], row['pass']):
-                session['email'] = row['email']
+                session['username'] = row['username']
                 row.pop('_id', None)
                 session['mongo'] = row
                 return redirect(url_for('nfa'))
-            return redirect(url_for('index'))
+            return redirect(url_for('index', login_failure=True))
 
     # If we havent returned yet theres an error
     return jsonify({'error': 'we aren\'t sure what happened...'})
@@ -121,7 +137,7 @@ def logout():
 
 
 def logged_in():
-    if 'email' in session:
+    if 'username' in session:
         return True
     return False
 
