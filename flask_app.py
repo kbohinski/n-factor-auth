@@ -18,13 +18,21 @@ def index():
     return render_template('index.html', logged_in=logged_in())
 
 
-@app.route('/nfa')
+@app.route('/nfa', methods=['GET', 'POST'])
 def nfa():
+    if request.method == 'POST':
+
     return render_template('nfa.html')
 
 
-@app.route('/onboard')
+@app.route('/onboard', methods=['GET', 'POST'])
 def onboard():
+    if request.method == 'POST':
+        users.update({'email': session['info']['email']}, {
+            {
+
+            }
+        })
     return render_template('onboard.html')
 
 
