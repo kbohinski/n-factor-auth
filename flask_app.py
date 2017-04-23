@@ -19,7 +19,7 @@ twilio = Client(app.config.get('TWILIO_ID'), app.config.get('TWILIO_TOKEN'))
 @app.route('/')
 def index():
     if logged_in() and not passed_nfa():
-      return redirect(url_for('nfa'))
+        return redirect(url_for('nfa'))
     return render_template('index.html', logged_in=logged_in())
 
 
@@ -36,7 +36,8 @@ def nfa():
             for i in range(0, int(session['mongo']['n'])):
                 if session[str('tokens' + str(i))] != request.form[str('tokens' + str(i))]:
                     session['error'] = '<p>one of your tokens was wrong, try again</p>'
-                    session['error'] += '<p>got "' + request.form[str('tokens' + str(i))] + '", expected "' + session[str('tokens' + str(i))] + '"</p>'
+                    session['error'] += '<p>got "' + request.form[str('tokens' + str(i))] + '", expected "' + session[
+                        str('tokens' + str(i))] + '"</p>'
                     return redirect(url_for('nfa'))
             session['nfa_passed'] = True
             return redirect(url_for('index'))
@@ -115,10 +116,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('email', None)
-    session.pop('mongo', None)
-    session.pop('nfa_passed', None)
-    session.pop('error', None)
+    session.clear()
     return redirect(url_for('index'))
 
 
