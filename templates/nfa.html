@@ -14,8 +14,8 @@
 				<fieldset>
 					{% for i in range(0, n) %}
 						<div class="form-group">
-							<label class="col-md-4 control-label" for="token">tokens{{ i }}</label>
-							<div class="col-md-4">
+							<label class="control-label" for="token">tokens{{ i }}</label>
+							<div>
 								<input id="tokens{{ i }}" name="tokens{{ i }}" placeholder="" class="form-control input-md"
 									   required=""
 									   type="text">
@@ -23,7 +23,7 @@
 						</div>
 					{% endfor %}
 					<div class="form-group">
-						<div class="col-md-4">
+						<div>
 							<button id="submit" name="submit" type="submit" class="btn btn-primary">submit</button>
 						</div>
 					</div>
