@@ -20,19 +20,35 @@ def index():
 
 @app.route('/nfa', methods=['GET', 'POST'])
 def nfa():
-    if request.method == 'POST':
-
+    # if request.method == 'POST':
     return render_template('nfa.html')
 
 
 @app.route('/onboard', methods=['GET', 'POST'])
 def onboard():
-    if request.method == 'POST':
-        users.update({'email': session['info']['email']}, {
-            {
+    if not logged_in():
+        return redirect(url_for('index'))
 
-            }
-        })
+    if request.method == 'POST':
+        method = 'api'
+
+        if 'numbers' in request.form:
+            # Team Based
+            method = 'team'
+            numbers = request.form['numbers'].split(',')
+            users.update({'email': session['email']}, {'$set': {'method': method, 'numbers': numbers}})
+
+        if 'n' in request.form:
+            # N
+            method = 'n'
+            n = request.form['n'].split(',')[0]
+            number = request.form['n'].split(',')[1]
+            users.update({'email': session['email']}, {'$set': {'method': method, 'number': number, 'n': n}})
+
+            users.update({'email': session['email']}, {'$set': {'method': method}})
+
+            return redirect(url_for('logout'))
+
     return render_template('onboard.html')
 
 
@@ -47,14 +63,14 @@ def login():
                 'email': request.form['email'],
                 'pass': pwd_context.hash(request.form['pass'])
             }
-            id = users.insert_one(user).inserted_id
-            session['info'] = {'id': id, 'email': request.form['email']}
+            users.insert_one(user)
+            session['email'] = request.form['email']
             return redirect(url_for('onboard'))
 
         if request.form['submit'] == 'login':
             row = users.find_one({'email': request.form['email']})
             if pwd_context.verify(request.form['pass'], row['pass']):
-                session['info'] = {'id': row['id'], 'email': row['email']}
+                session['email'] = row['email']
                 return redirect(url_for('nfa'))
             return redirect(url_for('index'))
 
@@ -64,14 +80,12 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('info', None)
-    session.pop('n', None)
-
+    session.pop('email', None)
     return redirect(url_for('index'))
 
 
 def logged_in():
-    if 'logged_in' in session:
+    if 'email' in session:
         return True
     return False
 
