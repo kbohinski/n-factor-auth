@@ -43,7 +43,7 @@ def nfa():
 
     if session['mongo']['method'] == 'n':
         for i in range(0, int(session['mongo']['n'])):
-            token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            token = '' + str(i) + ' - ' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
             session[str('tokens' + str(i))] = token
             twilio.messages.create(to=session['mongo']['number'], from_=app.config.get('TWILIO_NUMBER'), body=token)
 
